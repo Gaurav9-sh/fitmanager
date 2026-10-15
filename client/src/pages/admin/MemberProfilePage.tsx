@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, Edit2, UserCheck, CreditCard, QrCode, Phone, Mail, MapPin, Calendar, Activity, Clock, AlertTriangle, Plus } from 'lucide-react';
+import { ArrowLeft, Edit2, UserCheck, CreditCard, QrCode, Phone, Mail, MapPin, Calendar, Activity, AlertTriangle, Plus } from 'lucide-react';
 import api from '../../lib/api';
 import { formatDate, formatCurrency, getStatusClass, getStatusLabel, daysUntil } from '../../lib/utils';
 import toast from 'react-hot-toast';

@@ -2,12 +2,11 @@ import { useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, Users, CreditCard, Calendar, Dumbbell,
-  TrendingUp, MessageSquare, Settings, LogOut, Bell, Menu, X,
-  Receipt, ChevronRight, UserCheck, DollarSign, ClipboardList,
+  TrendingUp, MessageSquare, Settings, LogOut, Bell, Menu, X, UserCheck, DollarSign, ClipboardList,
   Activity
 } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
-import { formatDate } from '../../lib/utils';
+// import { formatDate } from '../../lib/utils';
 
 const navItems = [
   { to: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard' },

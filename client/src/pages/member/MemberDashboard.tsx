@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserCheck, CreditCard, Calendar, AlertTriangle, Activity, QrCode } from 'lucide-react';
 import api from '../../lib/api';
-import { formatDate, formatCurrency, getStatusClass, getStatusLabel, daysUntil } from '../../lib/utils';
+import { formatDate, formatCurrency, daysUntil } from '../../lib/utils';
 import { useAuthStore } from '../../store/authStore';
 import QRCodeDisplay from '../../components/common/QRCodeDisplay';
 
@@ -16,15 +16,15 @@ export default function MemberDashboard() {
     if (!user?.memberId) { setLoading(false); return; }
     api.get(`/members/${user.memberId}`)
       .then(r => setData(r.data.data))
-      .catch(() => {})
+      .catch(() => { })
       .finally(() => setLoading(false));
   }, [user?.memberId]);
 
-  if (loading) return <div className="space-y-4">{Array.from({length:4}).map((_,i) => <div key={i} className="skeleton h-28 rounded-xl" />)}</div>;
+  if (loading) return <div className="space-y-4">{Array.from({ length: 4 }).map((_, i) => <div key={i} className="skeleton h-28 rounded-xl" />)}</div>;
 
   const member = data?.member;
   const activeSub = data?.subscriptions?.find((s: any) => s.status === 'active' && new Date(s.endDate) >= new Date());
-  const unpaidInvoices = data?.invoices?.filter((i: any) => ['pending','partially_paid','overdue'].includes(i.status));
+  const unpaidInvoices = data?.invoices?.filter((i: any) => ['pending', 'partially_paid', 'overdue'].includes(i.status));
 
   return (
     <div className="space-y-5 animate-fade-in">

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { CreditCard, Plus, Search, Download } from 'lucide-react';
+import { CreditCard, Download } from 'lucide-react';
 import api from '../../lib/api';
-import { formatDate, formatCurrency, getStatusClass, getStatusLabel } from '../../lib/utils';
+import { formatCurrency, getStatusClass, getStatusLabel } from '../../lib/utils';
 import RecordPaymentModal from '../../components/modals/RecordPaymentModal';
 import toast from 'react-hot-toast';
 
@@ -57,30 +57,30 @@ export default function PaymentsPage() {
             <th>Invoice</th><th>Member</th><th>Description</th><th>Total</th><th>Paid</th><th>Pending</th><th>Status</th><th>Action</th>
           </tr></thead>
           <tbody>
-            {loading ? Array.from({length:8}).map((_,i) => <tr key={i}>{Array.from({length:8}).map((_,j) => <td key={j}><div className="skeleton h-4 rounded" /></td>)}</tr>) :
+            {loading ? Array.from({ length: 8 }).map((_, i) => <tr key={i}>{Array.from({ length: 8 }).map((_, j) => <td key={j}><div className="skeleton h-4 rounded" /></td>)}</tr>) :
               invoices.length === 0 ? <tr><td colSpan={8} className="text-center py-10 text-gray-500">No invoices found</td></tr> :
-              invoices.map(inv => (
-                <tr key={inv._id}>
-                  <td><span className="font-mono text-xs text-brand">{inv.invoiceNumber}</span></td>
-                  <td>
-                    <Link to={`/admin/members/${inv.member?._id}`} className="text-sm text-white hover:text-brand transition-colors">
-                      {inv.member?.name}<br/><span className="text-xs text-gray-500">{inv.member?.memberId}</span>
-                    </Link>
-                  </td>
-                  <td className="text-xs text-gray-400 max-w-[160px] truncate">{inv.description}</td>
-                  <td className="text-sm text-gray-300">{formatCurrency(inv.netAmount)}</td>
-                  <td className="text-sm text-green-400">{formatCurrency(inv.paidAmount)}</td>
-                  <td className={`text-sm font-medium ${inv.pendingAmount > 0 ? 'text-red-400' : 'text-gray-600'}`}>{formatCurrency(inv.pendingAmount)}</td>
-                  <td><span className={`badge ${getStatusClass(inv.status)}`}>{getStatusLabel(inv.status)}</span></td>
-                  <td>
-                    {['pending','partially_paid','overdue'].includes(inv.status) && (
-                      <button onClick={() => setSelectedInvoice(inv)} className="btn-primary btn-sm">
-                        <CreditCard size={13} /> Pay
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              ))
+                invoices.map(inv => (
+                  <tr key={inv._id}>
+                    <td><span className="font-mono text-xs text-brand">{inv.invoiceNumber}</span></td>
+                    <td>
+                      <Link to={`/admin/members/${inv.member?._id}`} className="text-sm text-white hover:text-brand transition-colors">
+                        {inv.member?.name}<br /><span className="text-xs text-gray-500">{inv.member?.memberId}</span>
+                      </Link>
+                    </td>
+                    <td className="text-xs text-gray-400 max-w-[160px] truncate">{inv.description}</td>
+                    <td className="text-sm text-gray-300">{formatCurrency(inv.netAmount)}</td>
+                    <td className="text-sm text-green-400">{formatCurrency(inv.paidAmount)}</td>
+                    <td className={`text-sm font-medium ${inv.pendingAmount > 0 ? 'text-red-400' : 'text-gray-600'}`}>{formatCurrency(inv.pendingAmount)}</td>
+                    <td><span className={`badge ${getStatusClass(inv.status)}`}>{getStatusLabel(inv.status)}</span></td>
+                    <td>
+                      {['pending', 'partially_paid', 'overdue'].includes(inv.status) && (
+                        <button onClick={() => setSelectedInvoice(inv)} className="btn-primary btn-sm">
+                          <CreditCard size={13} /> Pay
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                ))
             }
           </tbody>
         </table>

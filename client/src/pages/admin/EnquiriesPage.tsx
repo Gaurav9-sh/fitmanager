@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { MessageSquare, ChevronDown } from 'lucide-react';
+// import { MessageSquare, ChevronDown } from 'lucide-react';
 import api from '../../lib/api';
-import { formatDate, getStatusClass, getStatusLabel } from '../../lib/utils';
+import { formatDate, getStatusClass } from '../../lib/utils';
 import toast from 'react-hot-toast';
 
 const STATUSES = ['new', 'contacted', 'follow_up', 'converted', 'not_interested'];
@@ -15,7 +15,7 @@ export default function EnquiriesPage() {
     setLoading(true);
     const params: any = {};
     if (filter !== 'all') params.status = filter;
-    api.get('/enquiries', { params }).then(r => setEnquiries(r.data.data)).catch(() => {}).finally(() => setLoading(false));
+    api.get('/enquiries', { params }).then(r => setEnquiries(r.data.data)).catch(() => { }).finally(() => setLoading(false));
   };
 
   useEffect(() => { fetch(); }, [filter]);
@@ -50,31 +50,31 @@ export default function EnquiriesPage() {
         <table>
           <thead><tr><th>Name</th><th>Phone</th><th>Interested In</th><th>Message</th><th>Date</th><th>Status</th></tr></thead>
           <tbody>
-            {loading ? Array.from({length:5}).map((_,i) => <tr key={i}>{Array.from({length:6}).map((_,j) => <td key={j}><div className="skeleton h-4 rounded" /></td>)}</tr>) :
+            {loading ? Array.from({ length: 5 }).map((_, i) => <tr key={i}>{Array.from({ length: 6 }).map((_, j) => <td key={j}><div className="skeleton h-4 rounded" /></td>)}</tr>) :
               enquiries.length === 0 ? <tr><td colSpan={6} className="text-center py-10 text-gray-500">No enquiries found</td></tr> :
-              enquiries.map(enq => (
-                <tr key={enq._id}>
-                  <td>
-                    <p className="text-sm text-white font-medium">{enq.name}</p>
-                    <p className="text-xs text-gray-500">{enq.email}</p>
-                  </td>
-                  <td className="text-sm text-gray-300">{enq.phone}</td>
-                  <td className="text-xs text-gray-400">{enq.interestedIn || '—'}</td>
-                  <td className="text-xs text-gray-400 max-w-[200px]">
-                    <p className="truncate">{enq.message}</p>
-                  </td>
-                  <td className="text-xs text-gray-500">{formatDate(enq.createdAt, 'relative')}</td>
-                  <td>
-                    <select
-                      value={enq.status}
-                      onChange={e => updateStatus(enq._id, e.target.value)}
-                      className={`text-xs rounded-lg px-2 py-1 border cursor-pointer focus:outline-none bg-dark-700 ${getStatusClass(enq.status)}`}
-                    >
-                      {STATUSES.map(s => <option key={s} value={s} className="bg-dark-700 text-white">{s.replace('_', ' ')}</option>)}
-                    </select>
-                  </td>
-                </tr>
-              ))
+                enquiries.map(enq => (
+                  <tr key={enq._id}>
+                    <td>
+                      <p className="text-sm text-white font-medium">{enq.name}</p>
+                      <p className="text-xs text-gray-500">{enq.email}</p>
+                    </td>
+                    <td className="text-sm text-gray-300">{enq.phone}</td>
+                    <td className="text-xs text-gray-400">{enq.interestedIn || '—'}</td>
+                    <td className="text-xs text-gray-400 max-w-[200px]">
+                      <p className="truncate">{enq.message}</p>
+                    </td>
+                    <td className="text-xs text-gray-500">{formatDate(enq.createdAt, 'relative')}</td>
+                    <td>
+                      <select
+                        value={enq.status}
+                        onChange={e => updateStatus(enq._id, e.target.value)}
+                        className={`text-xs rounded-lg px-2 py-1 border cursor-pointer focus:outline-none bg-dark-700 ${getStatusClass(enq.status)}`}
+                      >
+                        {STATUSES.map(s => <option key={s} value={s} className="bg-dark-700 text-white">{s.replace('_', ' ')}</option>)}
+                      </select>
+                    </td>
+                  </tr>
+                ))
             }
           </tbody>
         </table>

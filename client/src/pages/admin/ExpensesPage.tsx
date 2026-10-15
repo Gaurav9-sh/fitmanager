@@ -4,7 +4,7 @@ import api from '../../lib/api';
 import { formatDate, formatCurrency, capitalize } from '../../lib/utils';
 import toast from 'react-hot-toast';
 
-const CATEGORIES = ['rent','salary','electricity','water','internet','equipment_purchase','equipment_maintenance','marketing','cleaning','insurance','software','miscellaneous','other'];
+const CATEGORIES = ['rent', 'salary', 'electricity', 'water', 'internet', 'equipment_purchase', 'equipment_maintenance', 'marketing', 'cleaning', 'insurance', 'software', 'miscellaneous', 'other'];
 
 export default function ExpensesPage() {
   const [expenses, setExpenses] = useState<any[]>([]);
@@ -13,7 +13,7 @@ export default function ExpensesPage() {
   const [showForm, setShowForm] = useState(false);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({ title: '', category: 'rent', amount: '', date: new Date().toISOString().split('T')[0], description: '', vendor: '', paymentMethod: 'cash' });
-  const [page, setPage] = useState(1);
+  const [page] = useState(1);
   const [total, setTotal] = useState(0);
 
   const fetch = () => {
@@ -24,7 +24,7 @@ export default function ExpensesPage() {
     ]).then(([r, s]) => {
       setExpenses(r.data.data); setTotal(r.data.pagination?.total || 0);
       setSummary(s.data.data);
-    }).catch(() => {}).finally(() => setLoading(false));
+    }).catch(() => { }).finally(() => setLoading(false));
   };
   useEffect(() => { fetch(); }, [page]);
 
@@ -75,21 +75,21 @@ export default function ExpensesPage() {
         <div className="card p-6">
           <h3 className="text-white font-semibold mb-4">Record Expense</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div><label className="label">Title *</label><input className="input" value={form.title} onChange={e => setForm(f => ({...f, title: e.target.value}))} placeholder="e.g. Monthly Rent" /></div>
+            <div><label className="label">Title *</label><input className="input" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} placeholder="e.g. Monthly Rent" /></div>
             <div><label className="label">Category *</label>
-              <select className="input" value={form.category} onChange={e => setForm(f => ({...f, category: e.target.value}))}>
+              <select className="input" value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))}>
                 {CATEGORIES.map(c => <option key={c} value={c}>{capitalize(c)}</option>)}
               </select>
             </div>
-            <div><label className="label">Amount (₹) *</label><input type="number" step="0.01" className="input" value={form.amount} onChange={e => setForm(f => ({...f, amount: e.target.value}))} /></div>
-            <div><label className="label">Date *</label><input type="date" className="input" value={form.date} onChange={e => setForm(f => ({...f, date: e.target.value}))} /></div>
-            <div><label className="label">Vendor</label><input className="input" value={form.vendor} onChange={e => setForm(f => ({...f, vendor: e.target.value}))} placeholder="Vendor name (optional)" /></div>
+            <div><label className="label">Amount (₹) *</label><input type="number" step="0.01" className="input" value={form.amount} onChange={e => setForm(f => ({ ...f, amount: e.target.value }))} /></div>
+            <div><label className="label">Date *</label><input type="date" className="input" value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))} /></div>
+            <div><label className="label">Vendor</label><input className="input" value={form.vendor} onChange={e => setForm(f => ({ ...f, vendor: e.target.value }))} placeholder="Vendor name (optional)" /></div>
             <div><label className="label">Payment Method</label>
-              <select className="input" value={form.paymentMethod} onChange={e => setForm(f => ({...f, paymentMethod: e.target.value}))}>
-                {['cash','upi','card','bank_transfer','other'].map(m => <option key={m} value={m}>{capitalize(m)}</option>)}
+              <select className="input" value={form.paymentMethod} onChange={e => setForm(f => ({ ...f, paymentMethod: e.target.value }))}>
+                {['cash', 'upi', 'card', 'bank_transfer', 'other'].map(m => <option key={m} value={m}>{capitalize(m)}</option>)}
               </select>
             </div>
-            <div className="sm:col-span-2"><label className="label">Description</label><input className="input" value={form.description} onChange={e => setForm(f => ({...f, description: e.target.value}))} placeholder="Optional details..." /></div>
+            <div className="sm:col-span-2"><label className="label">Description</label><input className="input" value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} placeholder="Optional details..." /></div>
           </div>
           <div className="flex gap-2 mt-4">
             <button onClick={() => setShowForm(false)} className="btn-secondary">Cancel</button>
@@ -102,15 +102,15 @@ export default function ExpensesPage() {
         <table>
           <thead><tr><th>Title</th><th>Category</th><th>Amount</th><th>Date</th><th>Vendor</th><th>Method</th><th></th></tr></thead>
           <tbody>
-            {loading ? Array.from({length:6}).map((_,i) => <tr key={i}>{Array.from({length:7}).map((_,j) => <td key={j}><div className="skeleton h-4 rounded" /></td>)}</tr>) :
+            {loading ? Array.from({ length: 6 }).map((_, i) => <tr key={i}>{Array.from({ length: 7 }).map((_, j) => <td key={j}><div className="skeleton h-4 rounded" /></td>)}</tr>) :
               expenses.map(exp => (
                 <tr key={exp._id}>
                   <td className="text-sm text-white font-medium">{exp.title}</td>
-                  <td><span className="badge badge-pending capitalize">{exp.category?.replace('_',' ')}</span></td>
+                  <td><span className="badge badge-pending capitalize">{exp.category?.replace('_', ' ')}</span></td>
                   <td className="text-sm font-bold text-brand">{formatCurrency(exp.amount)}</td>
                   <td className="text-xs text-gray-400">{formatDate(exp.date)}</td>
                   <td className="text-sm text-gray-400">{exp.vendor || '—'}</td>
-                  <td className="text-xs text-gray-500 capitalize">{exp.paymentMethod?.replace('_',' ')}</td>
+                  <td className="text-xs text-gray-500 capitalize">{exp.paymentMethod?.replace('_', ' ')}</td>
                   <td><button onClick={() => handleDelete(exp._id)} className="btn-ghost btn-sm text-red-400 hover:text-red-300"><Trash2 size={13} /></button></td>
                 </tr>
               ))

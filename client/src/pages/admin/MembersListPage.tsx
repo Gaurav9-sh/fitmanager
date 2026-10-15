@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
-import { Search, Plus, Filter, Download, Eye, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Search, Plus, Eye, ChevronLeft, ChevronRight } from 'lucide-react';
 import api from '../../lib/api';
-import { formatDate, getStatusClass, getStatusLabel, formatCurrency } from '../../lib/utils';
+import { formatDate, getStatusClass, getStatusLabel } from '../../lib/utils';
 import toast from 'react-hot-toast';
 
 const STATUS_OPTIONS = ['all', 'active', 'expired', 'pending', 'suspended'];
@@ -66,9 +66,8 @@ export default function MembersListPage() {
             <button
               key={s}
               onClick={() => { setStatus(s); setPage(1); }}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-all ${
-                status === s ? 'bg-brand text-black shadow-glow-sm' : 'bg-surface-elevated text-gray-400 hover:text-white border border-surface-border'
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-all ${status === s ? 'bg-brand text-black shadow-glow-sm' : 'bg-surface-elevated text-gray-400 hover:text-white border border-surface-border'
+                }`}
             >
               {s === 'all' ? 'All' : s}
             </button>
@@ -94,14 +93,14 @@ export default function MembersListPage() {
           <tbody>
             {loading
               ? Array.from({ length: 8 }).map((_, i) => (
-                  <tr key={i}>
-                    {Array.from({ length: 8 }).map((__, j) => (
-                      <td key={j}><div className="skeleton h-4 rounded w-full" /></td>
-                    ))}
-                  </tr>
-                ))
+                <tr key={i}>
+                  {Array.from({ length: 8 }).map((__, j) => (
+                    <td key={j}><div className="skeleton h-4 rounded w-full" /></td>
+                  ))}
+                </tr>
+              ))
               : members.length === 0
-              ? (
+                ? (
                   <tr>
                     <td colSpan={8} className="text-center py-12 text-gray-500">
                       <div className="flex flex-col items-center gap-2">
@@ -112,7 +111,7 @@ export default function MembersListPage() {
                     </td>
                   </tr>
                 )
-              : members.map((m) => (
+                : members.map((m) => (
                   <tr key={m._id}>
                     <td>
                       <div className="flex items-center gap-2.5">

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Star, Dumbbell, Plus } from 'lucide-react';
+import { Star, Plus } from 'lucide-react';
 import api from '../../lib/api';
 import toast from 'react-hot-toast';
 
@@ -44,14 +44,14 @@ export default function TrainersAdminPage() {
         <div className="card p-6">
           <h3 className="text-white font-semibold mb-4">Add New Trainer</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div><label className="label">Name *</label><input className="input" value={form.name} onChange={e => setForm(f => ({...f, name: e.target.value}))} placeholder="Trainer name" /></div>
-            <div><label className="label">Phone *</label><input className="input" value={form.phone} onChange={e => setForm(f => ({...f, phone: e.target.value}))} placeholder="9876543210" /></div>
-            <div><label className="label">Email</label><input className="input" type="email" value={form.email} onChange={e => setForm(f => ({...f, email: e.target.value}))} /></div>
-            <div><label className="label">Experience (years)</label><input type="number" className="input" value={form.experience} onChange={e => setForm(f => ({...f, experience: e.target.value}))} /></div>
-            <div><label className="label">Monthly Salary (₹)</label><input type="number" className="input" value={form.salary} onChange={e => setForm(f => ({...f, salary: e.target.value}))} /></div>
-            <div><label className="label">Specialties (comma-separated)</label><input className="input" value={form.specialties} onChange={e => setForm(f => ({...f, specialties: e.target.value}))} placeholder="Strength, Yoga, HIIT" /></div>
-            <div className="sm:col-span-2"><label className="label">Qualifications (comma-separated)</label><input className="input" value={form.qualifications} onChange={e => setForm(f => ({...f, qualifications: e.target.value}))} placeholder="ACE CPT, NASM CES" /></div>
-            <div className="sm:col-span-2"><label className="label">Bio</label><textarea className="input resize-none" rows={3} value={form.bio} onChange={e => setForm(f => ({...f, bio: e.target.value}))} /></div>
+            <div><label className="label">Name *</label><input className="input" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Trainer name" /></div>
+            <div><label className="label">Phone *</label><input className="input" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} placeholder="9876543210" /></div>
+            <div><label className="label">Email</label><input className="input" type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} /></div>
+            <div><label className="label">Experience (years)</label><input type="number" className="input" value={form.experience} onChange={e => setForm(f => ({ ...f, experience: e.target.value }))} /></div>
+            <div><label className="label">Monthly Salary (₹)</label><input type="number" className="input" value={form.salary} onChange={e => setForm(f => ({ ...f, salary: e.target.value }))} /></div>
+            <div><label className="label">Specialties (comma-separated)</label><input className="input" value={form.specialties} onChange={e => setForm(f => ({ ...f, specialties: e.target.value }))} placeholder="Strength, Yoga, HIIT" /></div>
+            <div className="sm:col-span-2"><label className="label">Qualifications (comma-separated)</label><input className="input" value={form.qualifications} onChange={e => setForm(f => ({ ...f, qualifications: e.target.value }))} placeholder="ACE CPT, NASM CES" /></div>
+            <div className="sm:col-span-2"><label className="label">Bio</label><textarea className="input resize-none" rows={3} value={form.bio} onChange={e => setForm(f => ({ ...f, bio: e.target.value }))} /></div>
           </div>
           <div className="flex gap-2 mt-4">
             <button onClick={() => setShowForm(false)} className="btn-secondary">Cancel</button>
@@ -60,7 +60,7 @@ export default function TrainersAdminPage() {
         </div>
       )}
 
-      {loading ? <div className="grid grid-cols-1 md:grid-cols-3 gap-4">{[1,2,3].map(i => <div key={i} className="skeleton h-56 rounded-xl" />)}</div> : (
+      {loading ? <div className="grid grid-cols-1 md:grid-cols-3 gap-4">{[1, 2, 3].map(i => <div key={i} className="skeleton h-56 rounded-xl" />)}</div> : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {trainers.map(trainer => (
             <div key={trainer._id} className="card p-5">

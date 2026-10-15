@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { TrendingUp, TrendingDown, Download, DollarSign, AlertCircle } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+// import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import api from '../../lib/api';
 import { formatCurrency } from '../../lib/utils';
 import toast from 'react-hot-toast';
@@ -31,7 +31,7 @@ export default function ReportsPage() {
       setFinancial(f.data.data);
       setMembership(m.data.data);
     }).catch(() => toast.error('Failed to load reports'))
-    .finally(() => setLoading(false));
+      .finally(() => setLoading(false));
   };
 
   useEffect(() => { fetch(); }, [period]);
@@ -63,7 +63,7 @@ export default function ReportsPage() {
 
       {loading ? (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {Array.from({length:6}).map((_,i) => <div key={i} className="skeleton h-28 rounded-xl" />)}
+          {Array.from({ length: 6 }).map((_, i) => <div key={i} className="skeleton h-28 rounded-xl" />)}
         </div>
       ) : financial && (
         <>

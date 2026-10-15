@@ -26,7 +26,7 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       user: null,
       token: null,
       isLoading: false,
@@ -48,7 +48,7 @@ export const useAuthStore = create<AuthState>()(
       logout: async () => {
         try {
           await api.post('/auth/logout');
-        } catch (_) {}
+        } catch (_) { }
         localStorage.removeItem('fm_token');
         localStorage.removeItem('fm_user');
         set({ user: null, token: null, isAuthenticated: false });

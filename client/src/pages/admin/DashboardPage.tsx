@@ -59,12 +59,12 @@ export default function DashboardPage() {
         api.get('/dashboard/recent-activity'),
       ]);
       setKpi(kpiRes.data.data);
-      
+
       // Process revenue chart
-      const rev = kpiRes.data; // placeholder
+      // const rev = kpiRes.data; // placeholder
       const revMap = new Map(revRes.data.data.revenue.map((r: any) => [`${r._id.year}-${r._id.month}`, r.total]));
       const expMap = new Map(revRes.data.data.expenses.map((e: any) => [`${e._id.year}-${e._id.month}`, e.total]));
-      
+
       const chartData = [];
       for (let i = 11; i >= 0; i--) {
         const d = new Date();
@@ -72,26 +72,26 @@ export default function DashboardPage() {
         const key = `${d.getFullYear()}-${d.getMonth() + 1}`;
         chartData.push({
           month: MONTH_NAMES[d.getMonth()],
-          revenue: Math.round((revMap.get(key) || 0) / 100),
-          expenses: Math.round((expMap.get(key) || 0) / 100),
+          revenue: Math.round(Number(revMap.get(key) || 0) / 100),
+          expenses: Math.round(Number(expMap.get(key) || 0) / 100),
         });
       }
       setRevenueData(chartData);
-      
+
       // Attendance chart
       const attData = attRes.data.data.map((a: any) => ({
         date: a._id.slice(5), // MM-DD
         count: a.count,
       }));
       setAttendanceData(attData);
-      
+
       // Plan revenue
       setPlanRevenue(planRes.data.data.map((p: any) => ({
         name: p._id || 'Unknown',
         value: Math.round(p.total / 100),
         count: p.count,
       })));
-      
+
       setActivity(actRes.data.data);
     } catch (err) {
       toast.error('Failed to load dashboard data');
@@ -159,14 +159,14 @@ export default function DashboardPage() {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
         {loading
           ? Array.from({ length: 10 }).map((_, i) => (
-              <div key={i} className="kpi-card">
-                <div className="skeleton h-10 w-10 rounded-xl" />
-                <div className="space-y-2">
-                  <div className="skeleton h-7 w-20" />
-                  <div className="skeleton h-4 w-28" />
-                </div>
+            <div key={i} className="kpi-card">
+              <div className="skeleton h-10 w-10 rounded-xl" />
+              <div className="space-y-2">
+                <div className="skeleton h-7 w-20" />
+                <div className="skeleton h-4 w-28" />
               </div>
-            ))
+            </div>
+          ))
           : kpiCards.map((card) => <KPICard key={card.label} {...card} loading={false} />)}
       </div>
 
@@ -197,7 +197,7 @@ export default function DashboardPage() {
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#2e2e2e" />
                 <XAxis dataKey="month" tick={{ fill: '#6b7280', fontSize: 11 }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fill: '#6b7280', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${(v/1000).toFixed(0)}k`} />
+                <YAxis tick={{ fill: '#6b7280', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${(v / 1000).toFixed(0)}k`} />
                 <Tooltip content={<CustomTooltip />} />
                 <Legend wrapperStyle={{ fontSize: 12, color: '#9ca3af' }} />
                 <Area type="monotone" dataKey="revenue" stroke="#84cc16" fill="url(#rev)" strokeWidth={2} name="Revenue (₹)" />
@@ -215,16 +215,41 @@ export default function DashboardPage() {
           ) : planRevenue.length === 0 ? (
             <div className="flex items-center justify-center h-52 text-gray-500 text-sm">No data yet</div>
           ) : (
+
             <ResponsiveContainer width="100%" height={220}>
               <PieChart>
-                <Pie data={planRevenue} cx="50%" cy="50%" outerRadius={75} dataKey="value" label={({ name, percent }) => `${(percent * 100).toFixed(0)}%`} labelLine={false}>
+                <Pie
+                  data={planRevenue}
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={75}
+                  dataKey="value"
+                  label={({ percent }) =>
+                    `${((percent ?? 0) * 100).toFixed(0)}%`
+                  }
+                  labelLine={false}
+                >
                   {planRevenue.map((_, index) => (
-                    <Cell key={index} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+                    <Cell
+                      key={index}
+                      fill={CHART_COLORS[index % CHART_COLORS.length]}
+                    />
                   ))}
                 </Pie>
-                <Tooltip formatter={(v: number) => `₹${v.toLocaleString()}`} contentStyle={{ background: '#1e1e1e', border: '1px solid #2e2e2e', borderRadius: 8 }} />
+
+                <Tooltip
+                  formatter={(value) =>
+                    `₹${Number(value ?? 0).toLocaleString('en-IN')}`
+                  }
+                  contentStyle={{
+                    background: '#1e1e1e',
+                    border: '1px solid #2e2e2e',
+                    borderRadius: 8,
+                  }}
+                />
               </PieChart>
             </ResponsiveContainer>
+
           )}
           <div className="space-y-1 mt-2">
             {planRevenue.slice(0, 4).map((p, i) => (

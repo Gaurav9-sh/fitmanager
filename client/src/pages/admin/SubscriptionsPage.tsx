@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { UserCheck, AlertTriangle, ChevronRight } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 import api from '../../lib/api';
 import { formatDate, getStatusClass, getStatusLabel, formatCurrency, daysUntil } from '../../lib/utils';
 import toast from 'react-hot-toast';
@@ -57,35 +57,35 @@ export default function SubscriptionsPage() {
             <th>Member</th><th>Plan</th><th>Start</th><th>End</th><th>Days Left</th><th>Amount</th><th>Type</th><th>Status</th>
           </tr></thead>
           <tbody>
-            {loading ? Array.from({length:6}).map((_,i) => <tr key={i}>{Array.from({length:8}).map((_,j) => <td key={j}><div className="skeleton h-4 rounded" /></td>)}</tr>) :
+            {loading ? Array.from({ length: 6 }).map((_, i) => <tr key={i}>{Array.from({ length: 8 }).map((_, j) => <td key={j}><div className="skeleton h-4 rounded" /></td>)}</tr>) :
               subs.length === 0 ? <tr><td colSpan={8} className="text-center py-10 text-gray-500">No subscriptions found</td></tr> :
-              subs.map(sub => {
-                const days = daysUntil(sub.endDate);
-                return (
-                  <tr key={sub._id}>
-                    <td>
-                      <Link to={`/admin/members/${sub.member?._id}`} className="flex items-center gap-2 hover:text-brand transition-colors">
-                        <div className="w-7 h-7 rounded-full bg-brand/20 flex items-center justify-center text-brand text-xs font-bold">{sub.member?.name?.charAt(0)}</div>
-                        <div><p className="text-white text-sm font-medium">{sub.member?.name}</p><p className="text-gray-500 text-xs">{sub.member?.memberId}</p></div>
-                      </Link>
-                    </td>
-                    <td className="text-sm text-gray-300">{sub.planSnapshot?.name}</td>
-                    <td className="text-xs text-gray-400">{formatDate(sub.startDate)}</td>
-                    <td className="text-xs text-gray-400">{formatDate(sub.endDate)}</td>
-                    <td>
-                      {sub.status === 'active' ? (
-                        <span className={`text-sm font-medium ${days <= 3 ? 'text-red-400' : days <= 7 ? 'text-orange-400' : days <= 15 ? 'text-yellow-400' : 'text-green-400'}`}>
-                          {days > 0 ? `${days}d` : 'Today'}
-                          {days <= 7 && <AlertTriangle size={11} className="inline ml-1" />}
-                        </span>
-                      ) : <span className="text-gray-600">—</span>}
-                    </td>
-                    <td className="text-sm text-gray-300">{formatCurrency(sub.finalPrice)}</td>
-                    <td><span className={`badge ${sub.isRenewal ? 'badge-partial' : 'badge-pending'}`}>{sub.isRenewal ? 'Renewal' : 'New'}</span></td>
-                    <td><span className={`badge ${getStatusClass(sub.status)}`}>{getStatusLabel(sub.status)}</span></td>
-                  </tr>
-                );
-              })
+                subs.map(sub => {
+                  const days = daysUntil(sub.endDate);
+                  return (
+                    <tr key={sub._id}>
+                      <td>
+                        <Link to={`/admin/members/${sub.member?._id}`} className="flex items-center gap-2 hover:text-brand transition-colors">
+                          <div className="w-7 h-7 rounded-full bg-brand/20 flex items-center justify-center text-brand text-xs font-bold">{sub.member?.name?.charAt(0)}</div>
+                          <div><p className="text-white text-sm font-medium">{sub.member?.name}</p><p className="text-gray-500 text-xs">{sub.member?.memberId}</p></div>
+                        </Link>
+                      </td>
+                      <td className="text-sm text-gray-300">{sub.planSnapshot?.name}</td>
+                      <td className="text-xs text-gray-400">{formatDate(sub.startDate)}</td>
+                      <td className="text-xs text-gray-400">{formatDate(sub.endDate)}</td>
+                      <td>
+                        {sub.status === 'active' ? (
+                          <span className={`text-sm font-medium ${days <= 3 ? 'text-red-400' : days <= 7 ? 'text-orange-400' : days <= 15 ? 'text-yellow-400' : 'text-green-400'}`}>
+                            {days > 0 ? `${days}d` : 'Today'}
+                            {days <= 7 && <AlertTriangle size={11} className="inline ml-1" />}
+                          </span>
+                        ) : <span className="text-gray-600">—</span>}
+                      </td>
+                      <td className="text-sm text-gray-300">{formatCurrency(sub.finalPrice)}</td>
+                      <td><span className={`badge ${sub.isRenewal ? 'badge-partial' : 'badge-pending'}`}>{sub.isRenewal ? 'Renewal' : 'New'}</span></td>
+                      <td><span className={`badge ${getStatusClass(sub.status)}`}>{getStatusLabel(sub.status)}</span></td>
+                    </tr>
+                  );
+                })
             }
           </tbody>
         </table>
