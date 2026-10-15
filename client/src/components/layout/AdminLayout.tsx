@@ -42,7 +42,7 @@ export default function AdminLayout() {
       {/* Sidebar */}
       <aside
         className={`
-          fixed inset-y-0 left-0 z-30 w-64 flex flex-col bg-surface-DEFAULT border-r border-surface-border
+          fixed inset-y-0 left-0 z-30 w-64 flex flex-col bg-black border-r border-surface-border
           transform transition-transform duration-300 ease-in-out
           lg:relative lg:translate-x-0
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
