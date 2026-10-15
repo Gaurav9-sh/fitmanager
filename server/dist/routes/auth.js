@@ -12,7 +12,8 @@ const logger_1 = require("../utils/logger");
 const AuditLog_1 = require("../models/AuditLog");
 const router = (0, express_1.Router)();
 const signToken = (id, role, email) => {
-    return jsonwebtoken_1.default.sign({ id, role, email }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN || '7d' });
+    const expiresIn = process.env.JWT_EXPIRES_IN || '7d';
+    return jsonwebtoken_1.default.sign({ id, role, email }, process.env.JWT_SECRET, { expiresIn });
 };
 const sendTokenResponse = (user, statusCode, res) => {
     const token = signToken(user._id.toString(), user.role, user.email);

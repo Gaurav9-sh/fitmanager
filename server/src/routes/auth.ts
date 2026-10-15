@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import jwt, { SignOptions } from 'jsonwebtoken';
 import { User } from '../models/User';
 import { Member } from '../models/Member';
 import { authenticate, AuthRequest } from '../middleware/auth';
@@ -10,10 +10,13 @@ import { AuditLog } from '../models/AuditLog';
 const router = Router();
 
 const signToken = (id: string, role: string, email: string): string => {
+  const expiresIn: SignOptions['expiresIn'] =
+    (process.env.JWT_EXPIRES_IN as SignOptions['expiresIn']) || '7d';
+
   return jwt.sign(
     { id, role, email },
     process.env.JWT_SECRET!,
-    { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+    { expiresIn }
   );
 };
 
